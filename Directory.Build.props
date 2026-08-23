@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+    <ValheimPath Condition="'$(ValheimPath)' == ''">D:\SteamLibrary\steamapps\common\Valheim</ValheimPath>
+    <BepInExPath Condition="'$(BepInExPath)' == ''">$(ValheimPath)\BepInEx</BepInExPath>
+    <BepInExCore>$(BepInExPath)\core</BepInExCore>
+    <ValheimManaged>$(ValheimPath)\valheim_Data\Managed</ValheimManaged>
+    <ModVersion>0.1.0</ModVersion>
+    <R2ModManProfile>Testing</R2ModManProfile>
+    <ModDeployDir>$(USERPROFILE)\AppData\Roaming\r2modmanPlus-local\Valheim\profiles\$(R2ModManProfile)\BepInEx\plugins\Hardwire99-ComfortMe</ModDeployDir>
+  </PropertyGroup>
+</Project>

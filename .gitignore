@@ -1,0 +1,8 @@
+artifacts/
+**/obj/
+**/bin/
+tools/
+*.pending
+*.user
+*.suo
+.vs/

@@ -1,0 +1,9 @@
+{
+  "name": "ComfortMe",
+  "version_number": "0.1.0",
+  "website_url": "",
+  "description": "Hammer helper that highlights furniture which would raise the comfort of the room you are standing in.",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.2202"
+  ]
+}
