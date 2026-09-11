@@ -38,6 +38,17 @@ public sealed class ComfortMePlugin : BaseUnityPlugin
         }
 
         Log.LogInfo($"{ModConstants.ModName} {ModConstants.ModVersion} loaded ({ModConstants.BuildLabel}, dll {GetDllTimestamp()}).");
+
+        _ = new Terminal.ConsoleCommand(
+            "comfortme",
+            "Dump ComfortMe catalog HUD diagnostics",
+            _ => GroupCatalogPanel.Dump(),
+            false,
+            false,
+            false,
+            false,
+            false,
+            false);
     }
 
     private void OnDestroy()

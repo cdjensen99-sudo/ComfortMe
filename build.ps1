@@ -1,6 +1,6 @@
 param(
     [string]$ValheimPath = "D:\SteamLibrary\steamapps\common\Valheim",
-    [string]$DeployProfile = "C:\Users\cdjen\AppData\Roaming\r2modmanPlus-local\Valheim\profiles\Testing",
+    [string]$DeployProfile = "C:\Users\cdjen\AppData\Roaming\com.kesomannen.gale\valheim\profiles\New Release",
     [switch]$Deploy,
     [switch]$Package
 )
@@ -18,22 +18,36 @@ else {
     $null
 }
 
-dotnet build $project -p:ValheimPath=$ValheimPath -c Release
+$bepInExPath = Join-Path $DeployProfile "BepInEx"
+dotnet build $project "-p:ValheimPath=$ValheimPath" "-p:BepInExPath=$bepInExPath" -c Release --no-incremental
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "Built: $dll"
 
 if ($Deploy) {
-    $pluginDir = Join-Path $DeployProfile "BepInEx\plugins\Hardwire99-ComfortMe"
+    # Local folder name sorts before Hardwire99-ComfortMe so Gale cannot
+    # shadow this DLL with the Thunderstore zip on launch.
+    $pluginDir = Join-Path $DeployProfile "BepInEx\plugins\ComfortMe"
     New-Item -ItemType Directory -Force -Path $pluginDir | Out-Null
     $dest = Join-Path $pluginDir "ComfortMe.dll"
 
     try {
         Copy-Item $dll $dest -Force
-        if (Test-Path (Join-Path $thunderstore "manifest.json")) {
-            Copy-Item (Join-Path $thunderstore "manifest.json") (Join-Path $pluginDir "manifest.json") -Force
+        $srcHash = (Get-FileHash $dll -Algorithm SHA256).Hash
+        $dstHash = (Get-FileHash $dest -Algorithm SHA256).Hash
+        if ($srcHash -ne $dstHash) {
+            throw "Deploy hash mismatch: $dest"
         }
+
         Write-Host "Deployed to $dest"
+        Write-Host "SHA256 $dstHash"
+
+        $stock = Join-Path $DeployProfile "BepInEx\plugins\Hardwire99-ComfortMe\ComfortMe.dll"
+        if (Test-Path $stock) {
+            $stockBak = "$stock.stock"
+            Move-Item $stock $stockBak -Force
+            Write-Host "Parked Thunderstore DLL so it cannot load: $stockBak"
+        }
     }
     catch {
         $pending = Join-Path $pluginDir "ComfortMe.dll.pending"

@@ -26,6 +26,10 @@ internal sealed class ComfortSnapshot
 
     internal Dictionary<Piece.ComfortGroup, int> GroupMax { get; } = new Dictionary<Piece.ComfortGroup, int>();
 
+    internal Dictionary<Piece.ComfortGroup, string> GroupSource { get; } = new Dictionary<Piece.ComfortGroup, string>();
+
+    internal List<UniqueComfort> Uniques { get; } = new List<UniqueComfort>();
+
     private readonly HashSet<string> placedKeys = new HashSet<string>();
     private readonly HashSet<string> activeKeys = new HashSet<string>();
     private readonly HashSet<string> inactiveKeys = new HashSet<string>();
@@ -70,12 +74,18 @@ internal sealed class ComfortSnapshot
             {
                 AddIdentity(snap.activeKeys, piece);
                 Piece.ComfortGroup group = piece.m_comfortGroup;
-                if (group != Piece.ComfortGroup.None)
+                string local = PieceDiscovery.LocalName(piece);
+                if (group == Piece.ComfortGroup.None)
                 {
-                    if (!snap.GroupMax.TryGetValue(group, out int current) || live > current)
+                    if (!snap.Uniques.Exists(u => u.Name == local))
                     {
-                        snap.GroupMax[group] = live;
+                        snap.Uniques.Add(new UniqueComfort(local, live));
                     }
+                }
+                else if (!snap.GroupMax.TryGetValue(group, out int current) || live > current)
+                {
+                    snap.GroupMax[group] = live;
+                    snap.GroupSource[group] = local;
                 }
             }
             else
@@ -150,4 +160,17 @@ internal sealed class ComfortSnapshot
     {
         return piece.gameObject != null ? Utils.GetPrefabName(piece.gameObject) : string.Empty;
     }
+}
+
+internal readonly struct UniqueComfort
+{
+    internal UniqueComfort(string name, int comfort)
+    {
+        Name = name;
+        Comfort = comfort;
+    }
+
+    internal string Name { get; }
+
+    internal int Comfort { get; }
 }

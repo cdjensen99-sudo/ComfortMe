@@ -67,13 +67,12 @@
     </Reference>
   </ItemGroup>
 
-  <Target Name="DeployToR2ModManProfile" AfterTargets="Build">
+  <Target Name="DeployToGaleProfile" AfterTargets="Build" Condition="Exists('$(BepInExPath)')">
+    <MakeDir Directories="$(ModDeployDir)" />
     <Copy
       SourceFiles="$(OutputPath)$(AssemblyName).dll"
       DestinationFolder="$(ModDeployDir)"
-      SkipUnchangedFiles="true"
-      Condition="Exists('$(ModDeployDir)')" />
-    <Message Importance="high" Text="Deployed $(AssemblyName).dll to $(ModDeployDir)" Condition="Exists('$(ModDeployDir)')" />
-    <Warning Text="Mod deploy folder not found (skipped copy): $(ModDeployDir)" Condition="!Exists('$(ModDeployDir)')" />
+      SkipUnchangedFiles="false" />
+    <Message Importance="high" Text="Deployed $(AssemblyName).dll to $(ModDeployDir)" />
   </Target>
 </Project>

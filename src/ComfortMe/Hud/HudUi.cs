@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ namespace ComfortMe;
 internal static class HudUi
 {
     private static Sprite whiteSprite;
+    private static TMP_FontAsset cachedFont;
 
     internal static Sprite WhiteSprite
     {
@@ -28,12 +30,27 @@ internal static class HudUi
 
     internal static TMP_FontAsset FontFrom(Hud hud)
     {
-        return hud != null && hud.m_buildSelection != null ? hud.m_buildSelection.font : null;
+        Resolve(hud);
+        return cachedFont;
     }
 
     internal static Material FontMaterialFrom(Hud hud)
     {
-        return hud != null && hud.m_buildSelection != null ? hud.m_buildSelection.fontSharedMaterial : null;
+        return null;
+    }
+
+    internal static void ApplyVanillaFont(TMP_Text dest, Hud hud)
+    {
+        if (dest == null)
+        {
+            return;
+        }
+
+        Resolve(hud);
+        if (cachedFont != null)
+        {
+            dest.font = cachedFont;
+        }
     }
 
     internal static TextMeshProUGUI CreateText(Transform parent, string name, TMP_FontAsset font, Material fontMaterial, float size)
@@ -42,14 +59,15 @@ internal static class HudUi
         go.layer = parent.gameObject.layer;
         go.transform.SetParent(parent, false);
         TextMeshProUGUI tmp = go.AddComponent<TextMeshProUGUI>();
-        tmp.font = font;
-        if (fontMaterial != null)
+        TMP_FontAsset resolved = font != null ? font : cachedFont;
+        if (resolved != null)
         {
-            tmp.fontSharedMaterial = fontMaterial;
+            tmp.font = resolved;
         }
 
         tmp.fontSize = size;
         tmp.raycastTarget = false;
+        tmp.maskable = true;
         tmp.overflowMode = TextOverflowModes.Overflow;
         tmp.textWrappingMode = TextWrappingModes.NoWrap;
         tmp.richText = true;
@@ -65,11 +83,91 @@ internal static class HudUi
         image.sprite = WhiteSprite;
         image.color = color;
         image.raycastTarget = false;
+        image.maskable = true;
         return image;
     }
 
     internal static string Hex(Color color)
     {
         return ColorUtility.ToHtmlStringRGB(color);
+    }
+
+    private static void Resolve(Hud hud)
+    {
+        if (cachedFont != null)
+        {
+            return;
+        }
+
+        TMP_Text source = FindSource(hud);
+        if (source != null && source.font != null)
+        {
+            cachedFont = source.font;
+            ComfortMePlugin.Log?.LogInfo($"Using HUD font '{cachedFont.name}'.");
+            return;
+        }
+
+        TMP_FontAsset[] all = Resources.FindObjectsOfTypeAll<TMP_FontAsset>();
+        for (int i = 0; i < all.Length; i++)
+        {
+            TMP_FontAsset asset = all[i];
+            if (asset == null)
+            {
+                continue;
+            }
+
+            string name = asset.name ?? string.Empty;
+            if (name.IndexOf("Liberation", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                continue;
+            }
+
+            cachedFont = asset;
+            ComfortMePlugin.Log?.LogInfo($"Using fallback font '{cachedFont.name}'.");
+            return;
+        }
+    }
+
+    private static TMP_Text FindSource(Hud hud)
+    {
+        if (hud == null)
+        {
+            return null;
+        }
+
+        if (IsUsable(hud.m_buildSelection))
+        {
+            return hud.m_buildSelection;
+        }
+
+        if (IsUsable(hud.m_pieceDescription))
+        {
+            return hud.m_pieceDescription;
+        }
+
+        TMP_Text[] texts = hud.GetComponentsInChildren<TMP_Text>(true);
+        for (int i = 0; i < texts.Length; i++)
+        {
+            TMP_Text text = texts[i];
+            if (!IsUsable(text) || IsOurs(text))
+            {
+                continue;
+            }
+
+            return text;
+        }
+
+        return null;
+    }
+
+    private static bool IsUsable(TMP_Text text)
+    {
+        return text != null && text.font != null;
+    }
+
+    private static bool IsOurs(TMP_Text text)
+    {
+        string name = text.name;
+        return name == "Header" || name == "Body" || name == "Text";
     }
 }

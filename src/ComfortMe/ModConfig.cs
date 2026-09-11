@@ -49,7 +49,7 @@ internal static class ModConfig
             "Hud",
             "ShowGroupCatalog",
             true,
-            "When a comfort piece is selected, show that group's discovered pieces vs this room.");
+            "When a comfort piece is selected, show that group's discovered pieces vs this room. The room total stays visible while the hammer is open either way.");
 
         Policy = config.Bind(
             "Hud",

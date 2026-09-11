@@ -1,9 +1,9 @@
 {
   "name": "ComfortMe",
-  "version_number": "0.1.0",
+  "version_number": "1.0.0",
   "website_url": "https://github.com/cdjensen99-sudo/ComfortMe",
-  "description": "Hammer helper that highlights furniture which would raise the comfort of the room you are standing in.",
+  "description": "Valheim 1.0 hammer helper: see which furniture would raise the comfort of the room you are standing in.",
   "dependencies": [
-    "denikson-BepInExPack_Valheim-5.4.2202"
+    "denikson-BepInExPack_Valheim-5.4.2350"
   ]
 }

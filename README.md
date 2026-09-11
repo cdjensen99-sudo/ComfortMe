@@ -4,8 +4,8 @@
 
 ComfortMe does **not** change comfort values, recipes, or rested time. It only marks the build menu.
 
-**Current version:** 0.1.0  
-**Requires:** BepInEx Pack for Valheim  
+**Current version:** 1.0.0  
+**Requires:** Valheim 1.0 and BepInEx Pack for Valheim  
 **Install:** **Client-side only.** No server install. Other players do not need the mod.
 
 **Links**
@@ -18,8 +18,8 @@ ComfortMe does **not** change comfort values, recipes, or rested time. It only m
 
 1. Stand in the room you care about (comfort is a **10 m** bubble around *you*).
 2. Equip the **hammer** and **right-click** to open the piece grid.
-3. Look at **This room: N** under the **bottom-right** of the grid. That is vanilla comfort covering you right now (base + shelter + furniture).
-4. Scan the **`+N` chips** on the icons. The number is that piece’s comfort. The **color** is compared to *this room*, not to the best piece in the whole game.
+3. Look at **This room: N** to the **right** of the hammer. That is vanilla comfort covering you right now (base + shelter + furniture). The list stays open with the menu.
+4. Scan the **`+N` chips** on the icons. The number is that piece’s comfort. The **color** is compared to *this room*, not to the best piece in the whole game. Chips follow the piece across Categories, usage tags, Materials, Recent, and Favorites.
 5. Hover or select a comfort piece. The same panel lists every **discovered** piece in that group (other tabs named, e.g. Hearth on Misc).
 
 Unknown recipes stay hidden, same as vanilla. A greyed-out icon (you cannot afford it yet) can still wear a green chip: that is the shopping hint.
@@ -50,7 +50,7 @@ The chip is **not** the word “Comfort”. It is only `+N`. Vanilla already gre
 | **Red** | Lower than this room’s group max | Would not beat what’s already counting |
 | **Amber** | (chip stays grey) | **Unlit** — in range, but `GetComfort` is 0 until you add fuel / light it |
 
-Vanilla only counts the **best** piece in a group (Fire, Bed, Chair, Table, Banner, Carpet). Unique pieces (hot tub, armour stand, …) stack **once each**. Unlit fires and a cold hot tub contribute **0** until they are lit.
+Vanilla only counts the **best** piece in a group (Fire, Bed, Chair, Table, Banner, Carpet, plus 1.0 groups such as Decor, Display, Garland, Lantern, and Leisure). Unique pieces (hot tub, armour stand, …) stack **once each**. Unlit fires and a cold hot tub contribute **0** until they are lit.
 
 ---
 
@@ -85,7 +85,7 @@ You can run all three. ComfortMe does not clone Hygge’s inspector or GetComfor
 | `Enabled` | true | Kill switch |
 | `ShowValueBadge` | true | `+N` chips on the grid |
 | `BadgeUpgradesOnly` | **false** | `true` = only green chips. Default = green / grey / red on every comfort piece |
-| `ShowGroupCatalog` | true | Room total + group list when a comfort piece is selected |
+| `ShowGroupCatalog` | true | Extra group ladder when a comfort piece is hovered. The room total stays visible either way |
 | `HighlightPolicy` | AnyIncrease | AnyIncrease / BestAvailable / UpgradeOnly (green chips only) |
 | `RequireMaterials` | false | `true` = hide chips you cannot afford. Default leaves the chip on greyed icons |
 | `DebugLogging` | false | Extra BepInEx log spam |
@@ -94,7 +94,8 @@ You can run all three. ComfortMe does not clone Hygge’s inspector or GetComfor
 
 ## Requirements
 
-- BepInEx Pack for Valheim
+- Valheim 1.0
+- BepInEx Pack for Valheim (5.4.2350)
 
 ## Build (from source)
 
@@ -102,4 +103,4 @@ You can run all three. ComfortMe does not clone Hygge’s inspector or GetComfor
 .\build.ps1 -Deploy
 ```
 
-Output: `artifacts\ComfortMe.dll` (copied to the r2modman Testing profile when that folder exists).
+Output: `artifacts\ComfortMe.dll` (copied to the Gale **New Release** profile when that folder exists). Pass `-Package` to build the Thunderstore zip.
