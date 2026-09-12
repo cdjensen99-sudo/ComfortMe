@@ -16,6 +16,7 @@ internal static class ModConfig
     internal static ConfigEntry<bool> ShowValueBadge;
     internal static ConfigEntry<bool> BadgeUpgradesOnly;
     internal static ConfigEntry<bool> ShowGroupCatalog;
+    internal static ConfigEntry<bool> ShowComfortCategory;
     internal static ConfigEntry<HighlightPolicy> Policy;
     internal static ConfigEntry<bool> RequireMaterials;
 
@@ -49,7 +50,13 @@ internal static class ModConfig
             "Hud",
             "ShowGroupCatalog",
             true,
-            "When a comfort piece is selected, show that group's discovered pieces vs this room. The room total stays visible while the hammer is open either way.");
+            "Show the slim This room panel beside the hammer: Base, Shelter, and pieces that currently count.");
+
+        ShowComfortCategory = config.Bind(
+            "Hud",
+            "ShowComfortCategory",
+            true,
+            "Add a Comfort row to the 1.0 hammer Categories list. It shows every unlocked piece with comfort, without moving those recipes out of Furniture or Lighting.");
 
         Policy = config.Bind(
             "Hud",

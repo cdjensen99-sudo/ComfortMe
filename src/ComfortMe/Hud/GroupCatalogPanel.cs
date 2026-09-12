@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
-using HarmonyLib;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +7,7 @@ using UnityEngine.UI;
 namespace ComfortMe;
 
 /// <summary>
-/// Room breakdown vs vanilla comfort, plus the hovered group's hammer ladder.
+/// Slim room breakdown: vanilla total plus the pieces that currently count.
 /// Lives on its own Screen Space Overlay canvas so the 1.0 hammer canvas cannot cover it.
 /// </summary>
 internal static class GroupCatalogPanel
@@ -19,12 +17,6 @@ internal static class GroupCatalogPanel
 
     private static readonly Color PanelBackground = new Color(0.04f, 0.05f, 0.05f, 0.92f);
     private static readonly Color HeaderColor = new Color(0.92f, 0.93f, 0.9f, 1f);
-    private static readonly Color UpgradeGreen = new Color(0.35f, 0.85f, 0.55f, 1f);
-    private static readonly Color EqualGrey = new Color(0.72f, 0.72f, 0.72f, 1f);
-    private static readonly Color LowerRed = new Color(0.85f, 0.36f, 0.36f, 1f);
-    private static readonly Color UnlitAmber = new Color(0.95f, 0.72f, 0.28f, 1f);
-
-    private static readonly FieldInfo HoveredPieceField = AccessTools.Field(typeof(Hud), "m_hoveredPiece");
 
     private static Image panel;
     private static TextMeshProUGUI header;
@@ -111,23 +103,12 @@ internal static class GroupCatalogPanel
 
     internal static void RefreshFromHud(Hud hud, ComfortSnapshot snapshot)
     {
-        Piece piece = HoveredPiece(hud);
-        if (piece == null && Player.m_localPlayer != null)
-        {
-            Player.m_localPlayer.GetBuildSelection(
-                out piece,
-                out Vector2Int _,
-                out int _,
-                out Piece.PieceCategory _,
-                out PieceTable _);
-        }
-
-        Refresh(hud, piece, snapshot);
+        Refresh(hud, snapshot);
     }
 
-    internal static void Refresh(Hud hud, Piece selected, ComfortSnapshot snapshot)
+    internal static void Refresh(Hud hud, ComfortSnapshot snapshot)
     {
-        if (hud == null || snapshot == null || !ModConfig.Enabled.Value || !MenuOpen(hud))
+        if (hud == null || snapshot == null || !ModConfig.Enabled.Value || !ModConfig.ShowGroupCatalog.Value || !MenuOpen(hud))
         {
             Hide();
             return;
@@ -149,7 +130,7 @@ internal static class GroupCatalogPanel
         HudUi.ApplyVanillaFont(body, hud);
         panel.gameObject.SetActive(true);
 
-        StringBuilder builder = new StringBuilder(512);
+        StringBuilder builder = new StringBuilder(256);
         builder.Append("This room: ").Append(snapshot.Total);
         if (!snapshot.InShelter)
         {
@@ -168,36 +149,6 @@ internal static class GroupCatalogPanel
         }
 
         AppendCounting(builder, snapshot);
-
-        bool showGroup = ModConfig.ShowGroupCatalog.Value && selected != null && selected.m_comfort > 0;
-        if (showGroup)
-        {
-            ComfortClassification classification = UpgradeClassifier.Classify(selected, snapshot);
-            builder.Append("\n\n");
-            builder.Append(PieceDiscovery.GroupLabel(selected.m_comfortGroup));
-            builder.Append("  +").Append(selected.m_comfort);
-            if (selected.m_comfortGroup == Piece.ComfortGroup.None)
-            {
-                if (snapshot.HasActive(selected))
-                {
-                    builder.Append("  here: already placed");
-                }
-                else if (snapshot.HasPlaced(selected))
-                {
-                    builder.Append("  here: unlit");
-                }
-                else
-                {
-                    builder.Append("  here: missing");
-                }
-            }
-            else
-            {
-                builder.Append("  here: +").Append(classification.Current);
-            }
-
-            AppendGroupRows(builder, selected, snapshot);
-        }
 
         string text = builder.ToString();
         if (text == lastText)
@@ -241,80 +192,6 @@ internal static class GroupCatalogPanel
             UniqueComfort unique = snapshot.Uniques[i];
             builder.Append('\n');
             builder.Append(unique.Name).Append("  +").Append(unique.Comfort);
-        }
-    }
-
-    private static void AppendGroupRows(StringBuilder builder, Piece selected, ComfortSnapshot snapshot)
-    {
-        Player player = Player.m_localPlayer;
-        PieceTable table = PieceDiscovery.GetTable(player);
-        List<DiscoveredPiece> discovered = PieceDiscovery.AllComfort(player);
-        List<CatalogRow> rows = new List<CatalogRow>();
-        HashSet<string> seen = new HashSet<string>();
-
-        for (int i = 0; i < discovered.Count; i++)
-        {
-            Piece piece = discovered[i].Piece;
-            if (piece.m_comfortGroup != selected.m_comfortGroup)
-            {
-                continue;
-            }
-
-            if (!seen.Add(piece.m_name))
-            {
-                continue;
-            }
-
-            ComfortClassification classification = UpgradeClassifier.Classify(piece, snapshot);
-            rows.Add(new CatalogRow(
-                PieceDiscovery.LocalName(piece),
-                piece.m_comfort,
-                classification.Verdict,
-                discovered[i].Category != selected.m_category
-                    ? PieceDiscovery.CategoryLabel(table, discovered[i].Category)
-                    : null));
-        }
-
-        rows.Sort(CompareRows);
-        for (int i = 0; i < rows.Count; i++)
-        {
-            CatalogRow row = rows[i];
-            Color color = ColorFor(row.Verdict);
-            builder.Append("\n<color=#").Append(HudUi.Hex(color)).Append('>');
-            builder.Append(row.Name).Append("  +").Append(row.Comfort);
-            if (row.Verdict == ComfortVerdict.Unlit)
-            {
-                builder.Append("  (unlit)");
-            }
-
-            if (!string.IsNullOrEmpty(row.Tab))
-            {
-                builder.Append("  (").Append(row.Tab).Append(')');
-            }
-
-            builder.Append("</color>");
-        }
-    }
-
-    private static int CompareRows(CatalogRow a, CatalogRow b)
-    {
-        int comfort = a.Comfort.CompareTo(b.Comfort);
-        return comfort != 0 ? comfort : string.CompareOrdinal(a.Name, b.Name);
-    }
-
-    private static Color ColorFor(ComfortVerdict verdict)
-    {
-        switch (verdict)
-        {
-            case ComfortVerdict.Upgrade:
-            case ComfortVerdict.NewGroup:
-                return UpgradeGreen;
-            case ComfortVerdict.Downgrade:
-                return LowerRed;
-            case ComfortVerdict.Unlit:
-                return UnlitAmber;
-            default:
-                return EqualGrey;
         }
     }
 
@@ -400,11 +277,6 @@ internal static class GroupCatalogPanel
     private static bool MenuOpen(Hud hud)
     {
         return hud != null && hud.m_buildUi != null && hud.m_buildUi.gameObject.activeInHierarchy;
-    }
-
-    private static Piece HoveredPiece(Hud hud)
-    {
-        return hud != null ? HoveredPieceField?.GetValue(hud) as Piece : null;
     }
 
     private static void PlaceBesideBuildUi(Hud hud)
@@ -502,24 +374,5 @@ internal static class GroupCatalogPanel
 
         ComfortMePlugin.Log?.LogInfo(
             $"Catalog overlay canvas sorting={OverlaySorting} parent={host.name} hudCanvas={(hudCanvas != null ? hudCanvas.name : "null")}");
-    }
-
-    private readonly struct CatalogRow
-    {
-        internal CatalogRow(string name, int comfort, ComfortVerdict verdict, string tab)
-        {
-            Name = name;
-            Comfort = comfort;
-            Verdict = verdict;
-            Tab = tab;
-        }
-
-        internal string Name { get; }
-
-        internal int Comfort { get; }
-
-        internal ComfortVerdict Verdict { get; }
-
-        internal string Tab { get; }
     }
 }

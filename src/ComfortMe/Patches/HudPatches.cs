@@ -41,7 +41,7 @@ internal static class HudSetupPieceInfoPatch
         try
         {
             ComfortSnapshot snapshot = ComfortSnapshot.Capture(Player.m_localPlayer);
-            GroupCatalogPanel.Refresh(__instance, piece, snapshot);
+            GroupCatalogPanel.Refresh(__instance, snapshot);
             BuildHudBadge.ApplyToImage(__instance.m_buildIcon, piece, snapshot);
         }
         catch (Exception ex)
@@ -106,5 +106,6 @@ internal static class HudOnDestroyPatch
     {
         BuildHudBadge.Clear();
         GroupCatalogPanel.Clear();
+        ComfortUsageTag.Clear();
     }
 }

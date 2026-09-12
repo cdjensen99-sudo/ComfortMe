@@ -36,4 +36,22 @@ internal readonly struct ComfortClassification
     internal int Delta { get; }
 
     internal bool IsUpgrade => Verdict == ComfortVerdict.Upgrade || Verdict == ComfortVerdict.NewGroup;
+
+    internal static int ShopRank(ComfortVerdict verdict)
+    {
+        switch (verdict)
+        {
+            case ComfortVerdict.Upgrade:
+            case ComfortVerdict.NewGroup:
+                return 0;
+            case ComfortVerdict.Unlit:
+                return 1;
+            case ComfortVerdict.Redundant:
+                return 2;
+            case ComfortVerdict.Downgrade:
+                return 3;
+            default:
+                return 4;
+        }
+    }
 }

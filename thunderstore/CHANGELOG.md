@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0 — Comfort category
+
+- **Comfort** row on the 1.0 hammer **Categories** list. It is a virtual usage tag, not a 10th native `PieceCategory`, so Furniture and Lighting stay where vanilla put them.
+- That list is a this-room shopping order: **upgrades first**, then **unlit**, then already counting, then lower pieces.
+- **Amber `+N` chips** for pieces that are already in range but not counting until you add fuel or light them.
+- **This room** panel is slim: Base, Shelter, and only the pieces that currently count. The hover group ladder is gone; use the Comfort row for that.
+
 ## 1.0.0 — Valheim 1.0
 
 - Requires **Valheim 1.0** (tested on 1.0.7) and BepInEx Pack 5.4.2350.

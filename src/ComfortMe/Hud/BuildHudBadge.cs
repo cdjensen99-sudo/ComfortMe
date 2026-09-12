@@ -21,6 +21,7 @@ internal static class BuildHudBadge
     private static readonly Color UpgradeGreen = new Color(0.35f, 0.85f, 0.55f, 1f);
     private static readonly Color EqualGrey = new Color(0.72f, 0.72f, 0.72f, 1f);
     private static readonly Color LowerRed = new Color(0.85f, 0.36f, 0.36f, 1f);
+    private static readonly Color UnlitAmber = new Color(0.95f, 0.72f, 0.28f, 1f);
 
     private static readonly FieldInfo PieceIconsField = AccessTools.Field(typeof(Hud), "m_pieceIcons");
     private static readonly FieldInfo IconGoField = AccessTools.Field(AccessTools.Inner(typeof(Hud), "PieceIconData"), "m_go");
@@ -264,6 +265,8 @@ internal static class BuildHudBadge
                 return UpgradeGreen;
             case ComfortVerdict.Downgrade:
                 return LowerRed;
+            case ComfortVerdict.Unlit:
+                return UnlitAmber;
             default:
                 return EqualGrey;
         }
