@@ -39,6 +39,40 @@ internal static class HudUi
         return null;
     }
 
+    /// <summary>
+    /// True only while a place tool is equipped and the 1.0 (or legacy) piece menu is actually showing.
+    /// Hotkey-unequip leaves BuildUi in memory; do not treat that as an open menu.
+    /// </summary>
+    internal static bool BuildMenuOpen(Hud hud)
+    {
+        Player player = Player.m_localPlayer;
+        if (player == null || !player.InPlaceMode())
+        {
+            return false;
+        }
+
+        if (hud != null && hud.m_buildUi != null && hud.m_buildUi.gameObject.activeInHierarchy)
+        {
+            return true;
+        }
+
+        if (Hud.IsPieceSelectionVisible())
+        {
+            return true;
+        }
+
+        return hud != null && hud.m_buildHud != null && hud.m_buildHud.activeInHierarchy;
+    }
+
+    /// <summary>
+    /// True while a place tool is equipped, including ghost placement with the piece grid closed.
+    /// </summary>
+    internal static bool HoldingPlaceTool()
+    {
+        Player player = Player.m_localPlayer;
+        return player != null && player.InPlaceMode();
+    }
+
     internal static void ApplyVanillaFont(TMP_Text dest, Hud hud)
     {
         if (dest == null)

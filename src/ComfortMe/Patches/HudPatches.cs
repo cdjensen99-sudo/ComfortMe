@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using HarmonyLib;
 
 namespace ComfortMe.Patches;
@@ -98,6 +99,49 @@ internal static class BuildUiUpdatePieceButtonsPatch
     }
 }
 
+[HarmonyPatch(typeof(Hud), "Update")]
+internal static class HudUpdatePatch
+{
+    [HarmonyPostfix]
+    private static void Postfix(Hud __instance)
+    {
+        if (!ModConfig.Enabled.Value)
+        {
+            GroupCatalogPanel.Hide();
+            ComfortLinks.Hide();
+            return;
+        }
+
+        try
+        {
+            if (!HudUi.HoldingPlaceTool() || !ModConfig.ShowGroupCatalog.Value)
+            {
+                GroupCatalogPanel.Hide();
+            }
+            else
+            {
+                GroupCatalogPanel.Refresh(__instance, ComfortSnapshot.Capture(Player.m_localPlayer));
+            }
+
+            ComfortLinks.Tick(__instance);
+        }
+        catch (Exception ex)
+        {
+            ComfortMePlugin.Log?.LogError($"Hud Update catalog failed: {ex}");
+        }
+    }
+}
+
+[HarmonyPatch(typeof(Hud), "UpdateStatusEffects")]
+internal static class HudUpdateStatusEffectsPatch
+{
+    [HarmonyPostfix]
+    private static void Postfix(Hud __instance, List<StatusEffect> statusEffects)
+    {
+        ComfortLinks.BindRestedIcons(__instance, statusEffects);
+    }
+}
+
 [HarmonyPatch(typeof(Hud), "OnDestroy")]
 internal static class HudOnDestroyPatch
 {
@@ -107,5 +151,6 @@ internal static class HudOnDestroyPatch
         BuildHudBadge.Clear();
         GroupCatalogPanel.Clear();
         ComfortUsageTag.Clear();
+        ComfortLinks.Clear();
     }
 }

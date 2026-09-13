@@ -25,9 +25,7 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 Write-Host "Built: $dll"
 
 if ($Deploy) {
-    # Local folder name sorts before Hardwire99-ComfortMe so Gale cannot
-    # shadow this DLL with the Thunderstore zip on launch.
-    $pluginDir = Join-Path $DeployProfile "BepInEx\plugins\ComfortMe"
+    $pluginDir = Join-Path $DeployProfile "BepInEx\plugins\Hardwire99-ComfortMe"
     New-Item -ItemType Directory -Force -Path $pluginDir | Out-Null
     $dest = Join-Path $pluginDir "ComfortMe.dll"
 
@@ -42,11 +40,16 @@ if ($Deploy) {
         Write-Host "Deployed to $dest"
         Write-Host "SHA256 $dstHash"
 
-        $stock = Join-Path $DeployProfile "BepInEx\plugins\Hardwire99-ComfortMe\ComfortMe.dll"
-        if (Test-Path $stock) {
-            $stockBak = "$stock.stock"
-            Move-Item $stock $stockBak -Force
-            Write-Host "Parked Thunderstore DLL so it cannot load: $stockBak"
+        $duplicateDir = Join-Path $DeployProfile "BepInEx\plugins\ComfortMe"
+        if (Test-Path $duplicateDir) {
+            Remove-Item $duplicateDir -Recurse -Force
+            Write-Host "Removed duplicate plugin folder: $duplicateDir"
+        }
+
+        $stockBak = "$dest.stock"
+        if (Test-Path $stockBak) {
+            Remove-Item $stockBak -Force
+            Write-Host "Removed parked Thunderstore DLL: $stockBak"
         }
     }
     catch {

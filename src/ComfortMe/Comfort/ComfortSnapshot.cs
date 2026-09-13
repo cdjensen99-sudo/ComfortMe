@@ -30,6 +30,8 @@ internal sealed class ComfortSnapshot
 
     internal List<UniqueComfort> Uniques { get; } = new List<UniqueComfort>();
 
+    internal List<Piece> CountingPieces { get; } = new List<Piece>();
+
     private readonly HashSet<string> placedKeys = new HashSet<string>();
     private readonly HashSet<string> activeKeys = new HashSet<string>();
     private readonly HashSet<string> inactiveKeys = new HashSet<string>();
@@ -60,6 +62,7 @@ internal sealed class ComfortSnapshot
 
         List<Piece> nearby = new List<Piece>();
         Piece.GetAllComfortPiecesInRadius(pos, ModConstants.ComfortRadius, nearby);
+        Dictionary<Piece.ComfortGroup, Piece> groupPieces = new Dictionary<Piece.ComfortGroup, Piece>();
         for (int i = 0; i < nearby.Count; i++)
         {
             Piece piece = nearby[i];
@@ -80,18 +83,25 @@ internal sealed class ComfortSnapshot
                     if (!snap.Uniques.Exists(u => u.Name == local))
                     {
                         snap.Uniques.Add(new UniqueComfort(local, live));
+                        snap.CountingPieces.Add(piece);
                     }
                 }
                 else if (!snap.GroupMax.TryGetValue(group, out int current) || live > current)
                 {
                     snap.GroupMax[group] = live;
                     snap.GroupSource[group] = local;
+                    groupPieces[group] = piece;
                 }
             }
             else
             {
                 AddIdentity(snap.inactiveKeys, piece);
             }
+        }
+
+        foreach (KeyValuePair<Piece.ComfortGroup, Piece> pair in groupPieces)
+        {
+            snap.CountingPieces.Add(pair.Value);
         }
 
         cached = snap;

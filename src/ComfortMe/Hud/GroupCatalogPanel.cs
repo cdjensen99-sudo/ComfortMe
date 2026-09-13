@@ -41,6 +41,20 @@ internal static class GroupCatalogPanel
         lastText = null;
     }
 
+    internal static bool IsHovered()
+    {
+        if (panel == null || !panel.gameObject.activeInHierarchy)
+        {
+            return false;
+        }
+
+        Canvas canvas = panel.canvas;
+        Camera cam = canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay
+            ? canvas.worldCamera
+            : null;
+        return RectTransformUtility.RectangleContainsScreenPoint(panel.rectTransform, Input.mousePosition, cam);
+    }
+
     internal static void Clear()
     {
         lastText = null;
@@ -99,6 +113,31 @@ internal static class GroupCatalogPanel
         {
             Console.instance.Print(msg);
         }
+
+        ComfortSnapshot snap = ComfortSnapshot.Capture(Player.m_localPlayer);
+        if (snap == null || snap.CountingPieces.Count == 0)
+        {
+            return;
+        }
+
+        List<string> names = new List<string>(snap.CountingPieces.Count);
+        for (int i = 0; i < snap.CountingPieces.Count; i++)
+        {
+            Piece piece = snap.CountingPieces[i];
+            if (piece == null)
+            {
+                continue;
+            }
+
+            names.Add(PieceDiscovery.LocalName(piece));
+        }
+
+        string counting = "ComfortMe counting: " + string.Join(", ", names.ToArray());
+        ComfortMePlugin.Log?.LogInfo(counting);
+        if (Console.instance != null)
+        {
+            Console.instance.Print(counting);
+        }
     }
 
     internal static void RefreshFromHud(Hud hud, ComfortSnapshot snapshot)
@@ -108,7 +147,7 @@ internal static class GroupCatalogPanel
 
     internal static void Refresh(Hud hud, ComfortSnapshot snapshot)
     {
-        if (hud == null || snapshot == null || !ModConfig.Enabled.Value || !ModConfig.ShowGroupCatalog.Value || !MenuOpen(hud))
+        if (hud == null || snapshot == null || !ModConfig.Enabled.Value || !ModConfig.ShowGroupCatalog.Value || !HudUi.HoldingPlaceTool())
         {
             Hide();
             return;
@@ -272,11 +311,6 @@ internal static class GroupCatalogPanel
         }
 
         PlaceBesideBuildUi(hud);
-    }
-
-    private static bool MenuOpen(Hud hud)
-    {
-        return hud != null && hud.m_buildUi != null && hud.m_buildUi.gameObject.activeInHierarchy;
     }
 
     private static void PlaceBesideBuildUi(Hud hud)

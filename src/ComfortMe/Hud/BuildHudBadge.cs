@@ -36,7 +36,7 @@ internal static class BuildHudBadge
 
     internal static void Refresh(Hud hud, ComfortSnapshot snapshot)
     {
-        if (hud == null || snapshot == null || !ModConfig.ShowValueBadge.Value || !MenuOpen(hud))
+        if (hud == null || snapshot == null || !ModConfig.ShowValueBadge.Value || !HudUi.BuildMenuOpen(hud))
         {
             HideAll(hud);
             return;
@@ -95,21 +95,6 @@ internal static class BuildHudBadge
         Hud hud = Hud.instance;
         Player player = Player.m_localPlayer;
         ApplyToImage(image, piece, snapshot, player, HudUi.FontFrom(hud), HudUi.FontMaterialFrom(hud));
-    }
-
-    private static bool MenuOpen(Hud hud)
-    {
-        if (hud != null && hud.m_buildUi != null && hud.m_buildUi.gameObject.activeInHierarchy)
-        {
-            return true;
-        }
-
-        if (Hud.IsPieceSelectionVisible())
-        {
-            return true;
-        }
-
-        return hud != null && hud.m_buildHud != null && hud.m_buildHud.activeInHierarchy;
     }
 
     private static void RefreshBuildUi(

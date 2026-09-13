@@ -5,8 +5,7 @@
     <BepInExPath Condition="'$(BepInExPath)' == ''">$(GaleProfile)\BepInEx</BepInExPath>
     <BepInExCore>$(BepInExPath)\core</BepInExCore>
     <ValheimManaged>$(ValheimPath)\valheim_Data\Managed</ValheimManaged>
-    <ModVersion>1.1.0</ModVersion>
-    <!-- Local folder sorts before Hardwire99-ComfortMe so Gale's Thunderstore zip cannot shadow this DLL. -->
-    <ModDeployDir>$(GaleProfile)\BepInEx\plugins\ComfortMe</ModDeployDir>
+    <ModVersion>1.2.0</ModVersion>
+    <ModDeployDir>$(GaleProfile)\BepInEx\plugins\Hardwire99-ComfortMe</ModDeployDir>
   </PropertyGroup>
 </Project>

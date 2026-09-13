@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using UnityEngine;
 
 namespace ComfortMe;
 
@@ -17,6 +18,8 @@ internal static class ModConfig
     internal static ConfigEntry<bool> BadgeUpgradesOnly;
     internal static ConfigEntry<bool> ShowGroupCatalog;
     internal static ConfigEntry<bool> ShowComfortCategory;
+    internal static ConfigEntry<bool> ShowComfortLinks;
+    internal static ConfigEntry<KeyboardShortcut> HudCursorKey;
     internal static ConfigEntry<HighlightPolicy> Policy;
     internal static ConfigEntry<bool> RequireMaterials;
 
@@ -57,6 +60,18 @@ internal static class ModConfig
             "ShowComfortCategory",
             true,
             "Add a Comfort row to the 1.0 hammer Categories list. It shows every unlocked piece with comfort, without moving those recipes out of Furniture or Lighting.");
+
+        ShowComfortLinks = config.Bind(
+            "Hud",
+            "ShowComfortLinks",
+            true,
+            "Draw sparkle lines to pieces that currently count when you hover the This room panel or the Rested status icon. While placing a comfort piece, draw a line from that ghost to you. Workbench/forge upgrade lines and Base/Shelter are not drawn.");
+
+        HudCursorKey = config.Bind(
+            "Hud",
+            "HudCursorKey",
+            new KeyboardShortcut(KeyCode.LeftAlt),
+            "Hold this key while the hammer is out and ready to place or repair (piece grid closed) to free the mouse from the camera so you can hover the HUD. Normal look is unchanged until you hold it.");
 
         Policy = config.Bind(
             "Hud",
