@@ -4,7 +4,7 @@
 
 ComfortMe does **not** change comfort values, recipes, or rested time. It only marks the build menu.
 
-**Current version:** 1.2.0  
+**Current version:** 1.2.1  
 **Requires:** Valheim 1.0 and BepInEx Pack for Valheim  
 **Install:** **Client-side only.** No server install. Other players do not need the mod.
 

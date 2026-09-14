@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.1
+
+- **Fixed:** Sparkle lines vanished in a larger mod list. ComfortMe was picking the short workbench connection flash instead of the looping mage sparkle.
+- **Fixed:** Hearths and campfires were skipped because they are crafting stations. They draw sparkle lines again. Workbench and forge *upgrade* lines still stay hidden.
+
 ## 1.2.0 — Sparkle links
 
 - **Valheim 1.0** complete: hammer chips, Comfort category, This room panel, and sparkle links on the 1.0 HUD.

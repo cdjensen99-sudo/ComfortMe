@@ -114,6 +114,13 @@ internal static class GroupCatalogPanel
             Console.instance.Print(msg);
         }
 
+        string links = ComfortLinks.Describe();
+        ComfortMePlugin.Log?.LogInfo(links);
+        if (Console.instance != null)
+        {
+            Console.instance.Print(links);
+        }
+
         ComfortSnapshot snap = ComfortSnapshot.Capture(Player.m_localPlayer);
         if (snap == null || snap.CountingPieces.Count == 0)
         {

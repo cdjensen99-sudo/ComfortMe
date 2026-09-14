@@ -242,20 +242,12 @@ internal static class ComfortLinks
             return false;
         }
 
-        return piece.GetComponent<CraftingStation>() != null
-            || piece.GetComponentInParent<CraftingStation>() != null
-            || IsStationExtension(piece);
+        return piece.GetComponent<StationExtension>() != null;
     }
 
     private static bool IsStationExtension(Piece piece)
     {
-        if (piece == null)
-        {
-            return false;
-        }
-
-        return piece.GetComponent<StationExtension>() != null
-            || piece.GetComponentInChildren<StationExtension>() != null;
+        return piece != null && piece.GetComponent<StationExtension>() != null;
     }
 
     private static int PlaceBeam(int used, Vector3 from, Vector3 to)
@@ -273,6 +265,7 @@ internal static class ComfortLinks
         t.rotation = Quaternion.LookRotation(delta / length);
         t.localScale = new Vector3(1f, 1f, length);
         beam.SetActive(true);
+        PlayBeam(beam);
         return used + 1;
     }
 
@@ -319,9 +312,11 @@ internal static class ComfortLinks
         if (beam == null)
         {
             EnsureBeamRoot();
-            beam = Object.Instantiate(prefab, beamRoot, false);
+            beam = Object.Instantiate(prefab);
             beam.name = "ComfortMeLink";
+            beam.transform.SetParent(beamRoot, true);
             StripStationScripts(beam);
+            PrepareBeamVfx(beam);
             beams[index] = beam;
         }
 
@@ -353,6 +348,62 @@ internal static class ComfortLinks
         {
             Object.Destroy(stations[i]);
         }
+
+        Component[] components = beam.GetComponentsInChildren<Component>(true);
+        for (int i = 0; i < components.Length; i++)
+        {
+            Component component = components[i];
+            if (component != null && component.GetType().Name == "TimedDestruction")
+            {
+                Object.Destroy(component);
+            }
+        }
+    }
+
+    private static void PrepareBeamVfx(GameObject beam)
+    {
+        ParticleSystem[] systems = beam.GetComponentsInChildren<ParticleSystem>(true);
+        for (int i = 0; i < systems.Length; i++)
+        {
+            ParticleSystem.MainModule main = systems[i].main;
+            main.loop = true;
+            main.playOnAwake = true;
+        }
+    }
+
+    private static void PlayBeam(GameObject beam)
+    {
+        ParticleSystem[] systems = beam.GetComponentsInChildren<ParticleSystem>(true);
+        for (int i = 0; i < systems.Length; i++)
+        {
+            if (!systems[i].isPlaying)
+            {
+                systems[i].Play(true);
+            }
+        }
+    }
+
+    internal static string Describe()
+    {
+        Player player = Player.m_localPlayer;
+        Piece ghost = GetPlacementGhostPiece(player);
+        int active = 0;
+        for (int i = 0; i < beams.Count; i++)
+        {
+            if (beams[i] != null && beams[i].activeSelf)
+            {
+                active++;
+            }
+        }
+
+        string ghostName = ghost != null ? PieceDiscovery.LocalName(ghost) + " +" + ghost.m_comfort : "none";
+        return "ComfortMe links: prefab=" + (prefab != null ? prefab.name : "null")
+            + " beams=" + active + "/" + beams.Count
+            + " restedIcons=" + restedIcons.Count
+            + " hoverCatalog=" + GroupCatalogPanel.IsHovered()
+            + " hoverRested=" + IsRestedIconHovered()
+            + " ghost=" + ghostName
+            + " suppressStation=" + SuppressVanillaStationLines();
     }
 
     private static bool ResolvePrefab()
@@ -362,7 +413,8 @@ internal static class ComfortLinks
             return true;
         }
 
-        GameObject sceneFallback = null;
+        GameObject best = null;
+        int bestScore = int.MinValue;
         StationExtension[] extensions = Resources.FindObjectsOfTypeAll<StationExtension>();
         for (int i = 0; i < extensions.Length; i++)
         {
@@ -373,29 +425,42 @@ internal static class ComfortLinks
             }
 
             GameObject candidate = extension.m_connectionPrefab;
+            int score = 0;
             if (!candidate.scene.IsValid())
             {
-                prefab = candidate;
-                break;
+                score += 10;
             }
 
-            if (sceneFallback == null)
+            if (extension.m_continousConnection)
             {
-                sceneFallback = candidate;
+                score += 50;
+            }
+
+            string name = candidate.name;
+            if (name.IndexOf("mage", System.StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                score += 40;
+            }
+
+            if (name.IndexOf("ExtensionConnection", System.StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                score += 5;
+            }
+
+            if (score > bestScore)
+            {
+                bestScore = score;
+                best = candidate;
             }
         }
 
-        if (prefab == null)
-        {
-            prefab = sceneFallback;
-        }
-
+        prefab = best;
         if (prefab != null)
         {
             if (!loggedPrefab)
             {
                 loggedPrefab = true;
-                ComfortMePlugin.Log?.LogInfo($"Comfort links using '{prefab.name}'.");
+                ComfortMePlugin.Log?.LogInfo($"Comfort links using '{prefab.name}' (score {bestScore}).");
             }
 
             return true;
