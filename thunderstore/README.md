@@ -4,7 +4,7 @@
 
 ComfortMe does **not** change comfort values, recipes, or rested time. It only marks the build menu.
 
-**Current version:** 1.2.1  
+**Current version:** 1.2.2  
 **Requires:** Valheim 1.0 and BepInEx Pack for Valheim  
 **Install:** **Client-side only.** No server install. Other players do not need the mod.
 
@@ -20,7 +20,7 @@ ComfortMe does **not** change comfort values, recipes, or rested time. It only m
 2. Equip the **hammer** and **right-click** to open the piece grid.
 3. Look at **This room: N** to the **right** of the hammer. That is vanilla comfort covering you right now (base + shelter + furniture that currently count). The list stays up while the hammer is equipped, including while you are placing a piece, and hides when you put the hammer away.
 4. Scan the **`+N` chips** on the icons. The number is that piece’s comfort. The **color** is compared to *this room*, not to the best piece in the whole game. Chips follow the piece across Categories, usage tags, Materials, Recent, and Favorites.
-5. Open **Categories** and click **Comfort** for every unlocked comfort piece in one grid. Upgrades for *this* room are first, then unlit, then already counting, then lower pieces.
+5. Open **Categories** and click **Comfort** for every unlocked comfort piece in one grid. Upgrades for *this* room are first, then unlit, then already counting, then lower pieces. Hover a piece to lighten the cell plates of every other unlocked piece in that vanilla group (all rugs, all chairs, all fires). The icon and chip do not change. Unique pieces with no group stay unhighlighted.
 6. With the hammer out and a piece ready to place (grid closed), hold **Left Alt** to free the mouse from the camera. Hover the **Rested** icon at the top right, or **This room**, to draw sparkle lines to every piece that currently counts. While you are placing a comfort piece, a line already runs from that ghost to you.
 
 Unknown recipes stay hidden, same as vanilla. A greyed-out icon (you cannot afford it yet) can still wear a green chip: that is the shopping hint.
@@ -73,7 +73,7 @@ Fire group — only the best fire counts. Hearth is grey `+2` because fire here 
 |-----|-----|
 | **Hygge** | Stats for the *selected* piece (group, value, nearest same-group). Green there means “best in the whole game,” not “helps *here*.” |
 | **GetComfortable** | F4 list of pieces *already contributing* where you stand. |
-| **ComfortMe** | Which **hammer icons** would raise **this** room, plus a Comfort category, a slim room total, and sparkle lines to the pieces that currently count. |
+| **ComfortMe** | Which **hammer icons** would raise **this** room, plus a Comfort category, group hover on that row, a slim room total, and sparkle lines to the pieces that currently count. |
 
 You can run all three. ComfortMe does not clone Hygge’s inspector or GetComfortable’s F4 list.
 
@@ -88,6 +88,7 @@ You can run all three. ComfortMe does not clone Hygge’s inspector or GetComfor
 | `BadgeUpgradesOnly` | **false** | `true` = only green chips. Default = green / amber / grey / red on every comfort piece |
 | `ShowGroupCatalog` | true | Slim **This room** panel beside the hammer |
 | `ShowComfortCategory` | true | **Comfort** row on the 1.0 Categories list |
+| `ShowGroupHoverHighlight` | true | On the Comfort row, hovering a piece lightens sibling cell plates in the same vanilla group |
 | `ShowComfortLinks` | true | Sparkle lines on hover of **This room** / **Rested**, and from a comfort ghost while placing |
 | `HudCursorKey` | LeftAlt | Hold while the hammer is ready to place (grid closed) to free the mouse from the camera |
 | `HighlightPolicy` | AnyIncrease | AnyIncrease / BestAvailable / UpgradeOnly (green chips only) |

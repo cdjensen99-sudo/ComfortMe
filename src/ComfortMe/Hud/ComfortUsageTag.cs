@@ -37,6 +37,22 @@ internal static class ComfortUsageTag
         return tagId != 0 && (tagId == allocatedId || tagId == previousId);
     }
 
+    internal static bool IsComfortTabSelected()
+    {
+        if (!ModConfig.ShowComfortCategory.Value || allocatedId == 0)
+        {
+            return false;
+        }
+
+        Hud hud = Hud.instance;
+        if (hud == null || hud.m_buildUi == null || !hud.m_buildUi.gameObject.activeInHierarchy)
+        {
+            return false;
+        }
+
+        return CurrentTagIdField?.GetValue(hud.m_buildUi) is int id && IsAllocated(id);
+    }
+
     internal static bool IsComfortRow(ByUsagePieceList list, int index)
     {
         List<int> tags = AvailableTags(list);

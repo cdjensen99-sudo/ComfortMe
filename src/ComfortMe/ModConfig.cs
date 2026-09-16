@@ -19,6 +19,7 @@ internal static class ModConfig
     internal static ConfigEntry<bool> ShowGroupCatalog;
     internal static ConfigEntry<bool> ShowComfortCategory;
     internal static ConfigEntry<bool> ShowComfortLinks;
+    internal static ConfigEntry<bool> ShowGroupHoverHighlight;
     internal static ConfigEntry<KeyboardShortcut> HudCursorKey;
     internal static ConfigEntry<HighlightPolicy> Policy;
     internal static ConfigEntry<bool> RequireMaterials;
@@ -66,6 +67,12 @@ internal static class ModConfig
             "ShowComfortLinks",
             true,
             "Draw sparkle lines to pieces that currently count when you hover the This room panel or the Rested status icon. While placing a comfort piece, draw a line from that ghost to you. Workbench/forge upgrade lines and Base/Shelter are not drawn.");
+
+        ShowGroupHoverHighlight = config.Bind(
+            "Hud",
+            "ShowGroupHoverHighlight",
+            true,
+            "On the Comfort hammer row, hovering a piece lightens the cell plate of every other unlocked piece in the same vanilla comfort group. Does not tint the icon or the +N chip. Unique pieces with no group are not highlighted.");
 
         HudCursorKey = config.Bind(
             "Hud",

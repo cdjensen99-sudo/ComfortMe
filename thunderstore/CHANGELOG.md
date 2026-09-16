@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.2
+
+- **Added:** On the Comfort hammer row, hovering a piece lightens the cell plate of every other unlocked piece in the same vanilla comfort group (hover a deer rug to see all rugs). The icon and `+N` chip stay as they are. Unique pieces with no group are not highlighted.
+
 ## 1.2.1
 
 - **Fixed:** Sparkle lines vanished in a larger mod list. ComfortMe was picking the short workbench connection flash instead of the looping mage sparkle.

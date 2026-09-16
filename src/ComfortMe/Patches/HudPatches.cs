@@ -109,6 +109,7 @@ internal static class HudUpdatePatch
         {
             GroupCatalogPanel.Hide();
             ComfortLinks.Hide();
+            GroupHoverHighlight.Clear();
             return;
         }
 
@@ -124,6 +125,7 @@ internal static class HudUpdatePatch
             }
 
             ComfortLinks.Tick(__instance);
+            GroupHoverHighlight.Tick();
         }
         catch (Exception ex)
         {
@@ -152,5 +154,6 @@ internal static class HudOnDestroyPatch
         GroupCatalogPanel.Clear();
         ComfortUsageTag.Clear();
         ComfortLinks.Clear();
+        GroupHoverHighlight.Clear();
     }
 }
