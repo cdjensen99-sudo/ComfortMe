@@ -86,10 +86,7 @@ if ($Package) {
     Copy-Item (Join-Path $thunderstore "manifest.json") (Join-Path $thunderstoreStaging "manifest.json") -Force
     Copy-Item (Join-Path $thunderstore "README.md") (Join-Path $thunderstoreStaging "README.md") -Force
 
-    $translationsSrc = Join-Path $root "translations"
-    $translationsDest = Join-Path $thunderstoreStaging "translations"
-    New-Item -ItemType Directory -Force -Path $translationsDest | Out-Null
-    Copy-Item (Join-Path $translationsSrc "English.json") $translationsDest -Force
+    Copy-Item (Join-Path $root "translations\English.json") (Join-Path $thunderstoreStaging "English.json") -Force
 
     $changelog = Join-Path $thunderstore "CHANGELOG.md"
     if (Test-Path $changelog) {
@@ -108,7 +105,23 @@ if ($Package) {
         Remove-Item $packagePath -Force
     }
 
-    Compress-Archive -Path (Join-Path $thunderstoreStaging "*") -DestinationPath $packagePath -Force
+    Add-Type -AssemblyName System.IO.Compression
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $zip = [System.IO.Compression.ZipFile]::Open($packagePath, [System.IO.Compression.ZipArchiveMode]::Create)
+    try {
+        Get-ChildItem $thunderstoreStaging -Recurse -File | ForEach-Object {
+            $relative = $_.FullName.Substring($thunderstoreStaging.Length).TrimStart('\', '/').Replace('\', '/')
+            [void][System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile(
+                $zip,
+                $_.FullName,
+                $relative,
+                [System.IO.Compression.CompressionLevel]::Optimal)
+        }
+    }
+    finally {
+        $zip.Dispose()
+    }
+
     Write-Host "Package: $packagePath"
 }
 

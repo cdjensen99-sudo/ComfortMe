@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.1
+
+- **Fixed:** Thunderstore zip. `English.json` sits next to the DLL at the package root, and the archive uses standard zip paths. 1.3.0 was rejected as an invalid submission because `translations\English.json` used Windows path separators.
+
 ## 1.3.0 — Localization
 
 - **Added:** ComfortMe HUD words follow Valheim’s language: the **Comfort** category row, **This room** panel, and group labels (Fire, Bed, Seating, and the rest). Piece names still come from Valheim.
