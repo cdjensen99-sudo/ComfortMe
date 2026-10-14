@@ -29,12 +29,10 @@ if ($Deploy) {
     New-Item -ItemType Directory -Force -Path $pluginDir | Out-Null
     $dest = Join-Path $pluginDir "ComfortMe.dll"
 
-    $translationsSrc = Join-Path $root "translations"
     $translationsDest = Join-Path $pluginDir "translations"
     New-Item -ItemType Directory -Force -Path $translationsDest | Out-Null
-    Copy-Item (Join-Path $translationsSrc "English.json") $translationsDest -Force
     Get-ChildItem $translationsDest -Filter "*.json" | Where-Object { $_.Name -ne "English.json" } | Remove-Item -Force
-    Write-Host "Deployed English.json only to $translationsDest"
+    Write-Host "Left plugin translations folder for GitHub language cache: $translationsDest"
 
     try {
         Copy-Item $dll $dest -Force
@@ -85,8 +83,6 @@ if ($Package) {
     Copy-Item $dll (Join-Path $thunderstoreStaging "ComfortMe.dll") -Force
     Copy-Item (Join-Path $thunderstore "manifest.json") (Join-Path $thunderstoreStaging "manifest.json") -Force
     Copy-Item (Join-Path $thunderstore "README.md") (Join-Path $thunderstoreStaging "README.md") -Force
-
-    Copy-Item (Join-Path $root "translations\English.json") (Join-Path $thunderstoreStaging "English.json") -Force
 
     $changelog = Join-Path $thunderstore "CHANGELOG.md"
     if (Test-Path $changelog) {

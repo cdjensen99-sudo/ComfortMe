@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.2
+
+- **Fixed:** English HUD strings are baked into the DLL. The Thunderstore zip is the same shape as 1.2.2 (no `English.json` sidecar). Other languages still download from GitHub.
+
 ## 1.3.1
 
 - **Fixed:** Thunderstore zip. `English.json` sits next to the DLL at the package root, and the archive uses standard zip paths. 1.3.0 was rejected as an invalid submission because `translations\English.json` used Windows path separators.

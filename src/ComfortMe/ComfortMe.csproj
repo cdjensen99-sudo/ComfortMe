@@ -13,7 +13,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <TranslationFile Include="..\..\translations\English.json" />
+    <EmbeddedResource Include="..\..\translations\English.json">
+      <LogicalName>ComfortMe.English.json</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -75,32 +77,11 @@
     </Reference>
   </ItemGroup>
 
-  <Target Name="CopyTranslations" AfterTargets="Build">
-    <MakeDir Directories="$(OutputPath)translations" />
-    <ItemGroup>
-      <_StaleOutputLoc Include="$(OutputPath)translations\*.json" Exclude="$(OutputPath)translations\English.json" />
-    </ItemGroup>
-    <Delete Files="@(_StaleOutputLoc)" />
-    <Copy
-      SourceFiles="@(TranslationFile)"
-      DestinationFolder="$(OutputPath)translations"
-      SkipUnchangedFiles="false" />
-  </Target>
-
   <Target Name="DeployToGaleProfile" AfterTargets="Build" Condition="Exists('$(BepInExPath)')">
     <MakeDir Directories="$(ModDeployDir)" />
-    <MakeDir Directories="$(ModDeployDir)\translations" />
-    <ItemGroup>
-      <_StaleDeployLoc Include="$(ModDeployDir)\translations\*.json" Exclude="$(ModDeployDir)\translations\English.json" />
-    </ItemGroup>
-    <Delete Files="@(_StaleDeployLoc)" />
     <Copy
       SourceFiles="$(OutputPath)$(AssemblyName).dll"
       DestinationFolder="$(ModDeployDir)"
-      SkipUnchangedFiles="false" />
-    <Copy
-      SourceFiles="@(TranslationFile)"
-      DestinationFolder="$(ModDeployDir)\translations"
       SkipUnchangedFiles="false" />
     <Message Importance="high" Text="Deployed $(AssemblyName).dll to $(ModDeployDir)" />
   </Target>

@@ -18,6 +18,7 @@ namespace ComfortMe;
 internal static class ModLocalization
 {
     private const string FolderName = "translations";
+    private const string EmbeddedEnglishName = "ComfortMe.English.json";
     private const int DownloadTimeoutMs = 8000;
     private static readonly Dictionary<string, string> english = new Dictionary<string, string>(StringComparer.Ordinal);
     private static readonly object downloadLock = new object();
@@ -317,17 +318,40 @@ internal static class ModLocalization
     {
         dest.Clear();
         string path = FindFile(language);
-        if (path == null)
+        if (path != null)
         {
-            if (!string.Equals(language, "English", StringComparison.OrdinalIgnoreCase))
-            {
-                ComfortMePlugin.Log?.LogWarning($"Localization file '{language}.json' was not found.");
-            }
-
+            ParseObject(File.ReadAllText(path, Encoding.UTF8), dest);
             return;
         }
 
-        ParseObject(File.ReadAllText(path, Encoding.UTF8), dest);
+        if (string.Equals(language, "English", StringComparison.OrdinalIgnoreCase)
+            && TryLoadEmbeddedEnglish(dest))
+        {
+            return;
+        }
+
+        if (!string.Equals(language, "English", StringComparison.OrdinalIgnoreCase))
+        {
+            ComfortMePlugin.Log?.LogWarning($"Localization file '{language}.json' was not found.");
+        }
+    }
+
+    private static bool TryLoadEmbeddedEnglish(Dictionary<string, string> dest)
+    {
+        Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(EmbeddedEnglishName);
+        if (stream == null)
+        {
+            ComfortMePlugin.Log?.LogWarning("Embedded English.json was not found in the DLL.");
+            return false;
+        }
+
+        using (stream)
+        using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+        {
+            ParseObject(reader.ReadToEnd(), dest);
+        }
+
+        return dest.Count > 0;
     }
 
     private static string FindFile(string language)
