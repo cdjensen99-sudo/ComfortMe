@@ -1,10 +1,12 @@
 # ComfortMe
 
+**New: Localization.** The Comfort tab, This room panel, and group labels follow the language you pick in Valheim.
+
 **Stand in a room. Open the hammer. See which furniture would raise *this* room’s comfort.**
 
 ComfortMe does **not** change comfort values, recipes, or rested time. It only marks the build menu.
 
-**Current version:** 1.3.2  
+**Current version:** 1.3.3  
 **Requires:** Valheim 1.0 and BepInEx Pack for Valheim  
 **Install:** **Client-side only.** No server install. Other players do not need the mod.
 
@@ -93,7 +95,7 @@ You can run all three. ComfortMe does not clone Hygge’s inspector or GetComfor
 | `HudCursorKey` | LeftAlt | Hold while the hammer is ready to place (grid closed) to free the mouse from the camera |
 | `HighlightPolicy` | AnyIncrease | AnyIncrease / BestAvailable / UpgradeOnly (green chips only) |
 | `RequireMaterials` | false | `true` = hide chips you cannot afford. Default leaves the chip on greyed icons |
-| `DownloadTranslations` | true | Download the selected language JSON from GitHub (English is built into the DLL) |
+| `DownloadTranslations` | true | Download the selected language JSON from GitHub (English.json ships next to the DLL) |
 | `TranslationsUrl` | GitHub translations repo | Folder URL for one JSON per language shared by Hardwire99 mods |
 | `DebugLogging` | false | Extra BepInEx log spam |
 
@@ -101,7 +103,7 @@ You can run all three. ComfortMe does not clone Hygge’s inspector or GetComfor
 
 ## Localization
 
-HUD chrome (Comfort tab, This room, group labels) follows the language selected in Valheim. English is built into the mod. French, German, Spanish, Russian, Ukrainian, Chinese, and Japanese are fetched from [github.com/cdjensen99-sudo/translations](https://github.com/cdjensen99-sudo/translations) and cached next to the DLL. Piece names and config text stay as they are.
+HUD chrome (Comfort tab, This room, group labels) follows the language selected in Valheim. **English.json** ships next to the DLL. French, German, Spanish, Russian, Ukrainian, Chinese, and Japanese are fetched from [github.com/cdjensen99-sudo/translations](https://github.com/cdjensen99-sudo/translations) and cached next to the DLL. Piece names and config text stay as they are.
 
 ---
 

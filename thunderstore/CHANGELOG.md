@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.3
+
+- **Changed:** English.json ships next to the DLL again (not baked in). Listing and README lead with localization. Other languages still download from GitHub so Thunderstore review can tell us if that is the hold.
+
 ## 1.3.2
 
 - **Fixed:** English HUD strings are baked into the DLL. The Thunderstore zip is the same shape as 1.2.2 (no `English.json` sidecar). Other languages still download from GitHub.

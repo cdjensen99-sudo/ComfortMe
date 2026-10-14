@@ -5,7 +5,7 @@
     <BepInExPath Condition="'$(BepInExPath)' == ''">$(GaleProfile)\BepInEx</BepInExPath>
     <BepInExCore>$(BepInExPath)\core</BepInExCore>
     <ValheimManaged>$(ValheimPath)\valheim_Data\Managed</ValheimManaged>
-    <ModVersion>1.3.2</ModVersion>
+    <ModVersion>1.3.3</ModVersion>
     <ModDeployDir>$(GaleProfile)\BepInEx\plugins\Hardwire99-ComfortMe</ModDeployDir>
   </PropertyGroup>
 </Project>

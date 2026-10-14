@@ -13,9 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="..\..\translations\English.json">
-      <LogicalName>ComfortMe.English.json</LogicalName>
-    </EmbeddedResource>
+    <TranslationFile Include="..\..\translations\English.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -81,6 +79,10 @@
     <MakeDir Directories="$(ModDeployDir)" />
     <Copy
       SourceFiles="$(OutputPath)$(AssemblyName).dll"
+      DestinationFolder="$(ModDeployDir)"
+      SkipUnchangedFiles="false" />
+    <Copy
+      SourceFiles="@(TranslationFile)"
       DestinationFolder="$(ModDeployDir)"
       SkipUnchangedFiles="false" />
     <Message Importance="high" Text="Deployed $(AssemblyName).dll to $(ModDeployDir)" />
