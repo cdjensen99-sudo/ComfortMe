@@ -142,35 +142,50 @@ internal static class PieceDiscovery
 
     internal static string GroupLabel(Piece.ComfortGroup group)
     {
+        string key;
         switch (group)
         {
             case Piece.ComfortGroup.Fire:
-                return "Fire";
+                key = "comfortme_group_fire";
+                break;
             case Piece.ComfortGroup.Bed:
-                return "Bed";
+                key = "comfortme_group_bed";
+                break;
             case Piece.ComfortGroup.Banner:
-                return "Banner";
+                key = "comfortme_group_banner";
+                break;
             case Piece.ComfortGroup.Chair:
-                return "Seating";
+                key = "comfortme_group_chair";
+                break;
             case Piece.ComfortGroup.Table:
-                return "Table";
+                key = "comfortme_group_table";
+                break;
             case Piece.ComfortGroup.Carpet:
-                return "Carpet";
+                key = "comfortme_group_carpet";
+                break;
             case Piece.ComfortGroup.Display:
-                return "Display";
+                key = "comfortme_group_display";
+                break;
             case Piece.ComfortGroup.Decor:
-                return "Decor";
+                key = "comfortme_group_decor";
+                break;
             case Piece.ComfortGroup.Garland:
-                return "Garland";
+                key = "comfortme_group_garland";
+                break;
             case Piece.ComfortGroup.Lantern:
-                return "Lantern";
+                key = "comfortme_group_lantern";
+                break;
             case Piece.ComfortGroup.Leisure:
-                return "Leisure";
+                key = "comfortme_group_leisure";
+                break;
             case Piece.ComfortGroup.None:
-                return "Unique";
+                key = "comfortme_group_none";
+                break;
             default:
                 return group.ToString();
         }
+
+        return ModLocalization.T(key);
     }
 
     private static void AddFromCategoryLists(List<DiscoveredPiece> result, HashSet<Piece> seen, PieceTable table)

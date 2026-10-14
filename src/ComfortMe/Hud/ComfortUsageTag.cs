@@ -10,7 +10,7 @@ namespace ComfortMe;
 /// </summary>
 internal static class ComfortUsageTag
 {
-    internal const string DisplayName = "Comfort";
+    internal static string DisplayName => ModLocalization.T("comfortme_category");
 
     private const int FirstId = -100;
     private const int ShowAllId = -1;

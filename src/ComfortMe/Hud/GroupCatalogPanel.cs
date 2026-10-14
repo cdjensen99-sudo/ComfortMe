@@ -76,6 +76,11 @@ internal static class GroupCatalogPanel
         overlay = null;
     }
 
+    internal static void InvalidateText()
+    {
+        lastText = null;
+    }
+
     internal static void Dump()
     {
         string msg;
@@ -175,23 +180,24 @@ internal static class GroupCatalogPanel
         HudUi.ApplyVanillaFont(header, hud);
         HudUi.ApplyVanillaFont(body, hud);
         panel.gameObject.SetActive(true);
+        ModLocalization.EnsureApplied();
 
         StringBuilder builder = new StringBuilder(256);
-        builder.Append("This room: ").Append(snapshot.Total);
+        builder.Append(ModLocalization.T("comfortme_this_room")).Append(": ").Append(snapshot.Total);
         if (!snapshot.InShelter)
         {
-            builder.Append("  (unsheltered)");
+            builder.Append("  ").Append(ModLocalization.T("comfortme_unsheltered"));
         }
 
         builder.Append('\n');
-        builder.Append("Base  +1");
+        builder.Append(ModLocalization.T("comfortme_base")).Append("  +1");
         if (snapshot.InShelter)
         {
-            builder.Append("\nShelter  +1");
+            builder.Append('\n').Append(ModLocalization.T("comfortme_shelter")).Append("  +1");
         }
         else
         {
-            builder.Append("\nShelter  missing");
+            builder.Append('\n').Append(ModLocalization.T("comfortme_shelter")).Append("  ").Append(ModLocalization.T("comfortme_missing"));
         }
 
         AppendCounting(builder, snapshot);

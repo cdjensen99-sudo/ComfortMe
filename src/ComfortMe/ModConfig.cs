@@ -23,6 +23,8 @@ internal static class ModConfig
     internal static ConfigEntry<KeyboardShortcut> HudCursorKey;
     internal static ConfigEntry<HighlightPolicy> Policy;
     internal static ConfigEntry<bool> RequireMaterials;
+    internal static ConfigEntry<bool> DownloadTranslations;
+    internal static ConfigEntry<string> TranslationsUrl;
 
     internal static void Bind(ConfigFile config)
     {
@@ -91,6 +93,18 @@ internal static class ModConfig
             "RequireMaterials",
             false,
             "When true, only badge pieces you can currently place. Default leaves greyed icons badgeable as a shopping hint.");
+
+        DownloadTranslations = config.Bind(
+            "Localization",
+            "DownloadTranslations",
+            true,
+            "Download the shared language JSON from GitHub on launch (English plus the language Valheim is using). Cached next to the DLL. The game still works offline from the files shipped with the mod.");
+
+        TranslationsUrl = config.Bind(
+            "Localization",
+            "TranslationsUrl",
+            ModConstants.TranslationsUrl,
+            "Folder URL for one JSON per language covering all Hardwire99 mods (French.json, Korean.json, …). Keys stay prefixed by mod, e.g. comfortme_category.");
     }
 
     internal static void LogDebug(string message)

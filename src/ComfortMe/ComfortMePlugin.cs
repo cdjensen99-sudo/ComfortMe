@@ -37,6 +37,8 @@ public sealed class ComfortMePlugin : BaseUnityPlugin
             Log.LogError($"Harmony PatchAll failed: {ex}");
         }
 
+        ModLocalization.Hook();
+
         Log.LogInfo($"{ModConstants.ModName} {ModConstants.ModVersion} loaded ({ModConstants.BuildLabel}, dll {GetDllTimestamp()}).");
 
         _ = new Terminal.ConsoleCommand(

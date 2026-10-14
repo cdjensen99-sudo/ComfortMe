@@ -4,7 +4,7 @@
 
 ComfortMe does **not** change comfort values, recipes, or rested time. It only marks the build menu.
 
-**Current version:** 1.2.2  
+**Current version:** 1.3.0  
 **Requires:** Valheim 1.0 and BepInEx Pack for Valheim  
 **Install:** **Client-side only.** No server install. Other players do not need the mod.
 
@@ -93,7 +93,15 @@ You can run all three. ComfortMe does not clone Hygge’s inspector or GetComfor
 | `HudCursorKey` | LeftAlt | Hold while the hammer is ready to place (grid closed) to free the mouse from the camera |
 | `HighlightPolicy` | AnyIncrease | AnyIncrease / BestAvailable / UpgradeOnly (green chips only) |
 | `RequireMaterials` | false | `true` = hide chips you cannot afford. Default leaves the chip on greyed icons |
+| `DownloadTranslations` | true | Download the selected language JSON from GitHub (English always ships in the zip) |
+| `TranslationsUrl` | GitHub translations repo | Folder URL for one JSON per language shared by Hardwire99 mods |
 | `DebugLogging` | false | Extra BepInEx log spam |
+
+---
+
+## Localization
+
+HUD chrome (Comfort tab, This room, group labels) follows the language selected in Valheim. **English.json** is in the zip. French, German, Spanish, Russian, Ukrainian, Chinese, and Japanese are fetched from [github.com/cdjensen99-sudo/translations](https://github.com/cdjensen99-sudo/translations) and cached next to the DLL. Piece names and config text stay as they are.
 
 ---
 

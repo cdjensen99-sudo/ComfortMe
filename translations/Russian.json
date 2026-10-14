@@ -1,0 +1,20 @@
+{
+  "comfortme_category": "Комфорт",
+  "comfortme_this_room": "Эта комната",
+  "comfortme_unsheltered": "(без укрытия)",
+  "comfortme_base": "Основа",
+  "comfortme_shelter": "Укрытие",
+  "comfortme_missing": "отсутствует",
+  "comfortme_group_fire": "Огонь",
+  "comfortme_group_bed": "Кровать",
+  "comfortme_group_banner": "Знамя",
+  "comfortme_group_chair": "Сиденье",
+  "comfortme_group_table": "Стол",
+  "comfortme_group_carpet": "Ковёр",
+  "comfortme_group_display": "Витрина",
+  "comfortme_group_decor": "Декор",
+  "comfortme_group_garland": "Гирлянда",
+  "comfortme_group_lantern": "Фонарь",
+  "comfortme_group_leisure": "Досуг",
+  "comfortme_group_none": "Уникальное"
+}

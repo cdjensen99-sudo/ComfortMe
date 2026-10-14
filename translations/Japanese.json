@@ -1,0 +1,20 @@
+{
+  "comfortme_category": "快適",
+  "comfortme_this_room": "この部屋",
+  "comfortme_unsheltered": "(未遮蔽)",
+  "comfortme_base": "基本",
+  "comfortme_shelter": "遮蔽",
+  "comfortme_missing": "なし",
+  "comfortme_group_fire": "火",
+  "comfortme_group_bed": "ベッド",
+  "comfortme_group_banner": "旗",
+  "comfortme_group_chair": "座席",
+  "comfortme_group_table": "テーブル",
+  "comfortme_group_carpet": "カーペット",
+  "comfortme_group_display": "展示",
+  "comfortme_group_decor": "装飾",
+  "comfortme_group_garland": "ガーランド",
+  "comfortme_group_lantern": "ランタン",
+  "comfortme_group_leisure": "余暇",
+  "comfortme_group_none": "固有"
+}

@@ -1,0 +1,20 @@
+{
+  "comfortme_category": "Confort",
+  "comfortme_this_room": "Cette pièce",
+  "comfortme_unsheltered": "(sans abri)",
+  "comfortme_base": "Base",
+  "comfortme_shelter": "Abri",
+  "comfortme_missing": "manquant",
+  "comfortme_group_fire": "Feu",
+  "comfortme_group_bed": "Lit",
+  "comfortme_group_banner": "Bannière",
+  "comfortme_group_chair": "Sièges",
+  "comfortme_group_table": "Table",
+  "comfortme_group_carpet": "Tapis",
+  "comfortme_group_display": "Présentoir",
+  "comfortme_group_decor": "Décor",
+  "comfortme_group_garland": "Guirlande",
+  "comfortme_group_lantern": "Lanterne",
+  "comfortme_group_leisure": "Loisir",
+  "comfortme_group_none": "Unique"
+}

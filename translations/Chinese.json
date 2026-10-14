@@ -1,0 +1,20 @@
+{
+  "comfortme_category": "舒适",
+  "comfortme_this_room": "当前房间",
+  "comfortme_unsheltered": "(无遮蔽)",
+  "comfortme_base": "基础",
+  "comfortme_shelter": "遮蔽",
+  "comfortme_missing": "缺失",
+  "comfortme_group_fire": "火源",
+  "comfortme_group_bed": "床",
+  "comfortme_group_banner": "旗帜",
+  "comfortme_group_chair": "座位",
+  "comfortme_group_table": "桌子",
+  "comfortme_group_carpet": "地毯",
+  "comfortme_group_display": "展示",
+  "comfortme_group_decor": "装饰",
+  "comfortme_group_garland": "花环",
+  "comfortme_group_lantern": "灯笼",
+  "comfortme_group_leisure": "休闲",
+  "comfortme_group_none": "独特"
+}

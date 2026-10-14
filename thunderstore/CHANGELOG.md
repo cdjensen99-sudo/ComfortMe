@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.0 — Localization
+
+- **Added:** ComfortMe HUD words follow Valheim’s language: the **Comfort** category row, **This room** panel, and group labels (Fire, Bed, Seating, and the rest). Piece names still come from Valheim.
+- The zip ships **English.json** next to the DLL. Other languages download from [Hardwire99 translations](https://github.com/cdjensen99-sudo/translations) on launch and cache beside the DLL (`DownloadTranslations`, default on). Offline play keeps English.
+- First languages: English, French, German, Spanish, Russian, Ukrainian, Chinese, Japanese. Russian and Ukrainian wording was checked by native speakers.
+- Config descriptions and log lines stay English.
+
 ## 1.2.2
 
 - **Added:** On the Comfort hammer row, hovering a piece lightens the cell plate of every other unlocked piece in the same vanilla comfort group (hover a deer rug to see all rugs). The icon and `+N` chip stay as they are. Unique pieces with no group are not highlighted.

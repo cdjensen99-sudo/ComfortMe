@@ -1,4 +1,5 @@
 artifacts/
+translations/*.zip
 **/obj/
 **/bin/
 tools/
