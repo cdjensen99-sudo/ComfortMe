@@ -1,8 +1,8 @@
 {
   "name": "ComfortMe",
-  "version_number": "1.3.3",
+  "version_number": "1.3.1",
   "website_url": "https://github.com/cdjensen99-sudo/ComfortMe",
-  "description": "NEW: Localization. Valheim 1.0 hammer helper: see which furniture would raise the comfort of the room you are standing in.",
+  "description": "Valheim 1.0 hammer helper: see which furniture would raise the comfort of the room you are standing in.",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2350"
   ]
